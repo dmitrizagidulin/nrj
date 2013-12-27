@@ -15,15 +15,4 @@ specific language governing permissions and limitations
 under the License.
 **/
 
-var should = require('should')
-var riak_json = require('../index.js').getClient()
-
-describe("Riak Json Client Test Suite", function() {
-  it("should be able to ping the Riak Json cluster", function(done) {
-    riak_json.ping(function(err, response) {
-      should.not.exist(err)
-      response.should.equal("OK")
-      done()
-    })
-  })
-})
+module.exports = require('./lib/client')
