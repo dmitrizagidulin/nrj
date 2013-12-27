@@ -16,11 +16,20 @@ under the License.
 **/
 
 var should = require('should')
-var riak_json = require('../index.js').getClient()
+var riak_json = require('../index.js')
+var client = riak_json.getClient()
 
 describe("Riak Json Client Test Suite", function() {
+  it("should be a valid client with default host and port", function(done) {
+    client.should.be.an.instanceOf(riak_json.RiakJsonClient)
+    client.should.have.property('host')
+    client.should.have.property('port')
+    done()
+  })
+  
   it("should be able to ping the Riak Json cluster", function(done) {
-    riak_json.ping(function(err, response) {
+    
+    client.ping(function(err, response) {
       should.not.exist(err)
       response.should.equal("OK")
       done()
