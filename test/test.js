@@ -16,7 +16,11 @@ under the License.
 **/
 
 describe("Riak Json Client Test Suite", function() {
-  it("should pass", function(pass) {
-    pass()
+  it("should be able to ping the Riak Json cluster", function(done) {
+    riak_json.ping(function(err, response) {
+      should.not.exist(err)
+      response.should.equal("OK")
+      done()
+    })
   })
 })
