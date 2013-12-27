@@ -9,6 +9,10 @@
     "type": "git",
     "url": "https://github.com/dmitrizagidulin/nrj.git"
   },
+  "devDependencies": {
+      "mocha": "*",
+      "should": "*"
+  },
   "keywords": [
     "riak",
     "basho",
