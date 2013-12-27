@@ -11,8 +11,8 @@
     "url": "https://github.com/dmitrizagidulin/nrj.git"
   },
   "devDependencies": {
-      "mocha": "*",
-      "should": "*"
+    "mocha": "*",
+    "should": "*"
   },
   "keywords": [
     "riak",
