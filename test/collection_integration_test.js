@@ -15,14 +15,17 @@ specific language governing permissions and limitations
 under the License.
 **/
 
-var Collection = function Collection(name, client) {
-  this.name = name
-  this.client = client
-  
-  this.insert_raw_json = function(key, json_obj) {
-    this.client.insert_raw_json(this.name, key, json_obj)
-    return key
-  }
-}
+var should = require('should')
+var riak_json = require('../index.js')
+var client = riak_json.getClient()
 
-module.exports.Collection = Collection
+describe("a Collection", function() {
+  it("should be able to write, read, and update raw JSON objs", function(done) {
+    var collection = client.collection('cities')
+    var test_key = 'document-key-123'
+    var json_obj = { 'field_one': '123', 'field_two': 'abc' }
+    collection.insert_raw_json(test_key, json_obj)
+//    key.should.equal(test_key)
+    done()
+  })
+})
