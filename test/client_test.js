@@ -37,9 +37,22 @@ describe("Riak Json Client Test Suite", function() {
   })
   
   it("should know the base Riak cluster and RiakJson urls", function(done) {
+    var host = '127.0.0.1'
+    var port = 8098
+    var client = riak_json.getClient(host, port)
     client.base_riak_path().should.not.be.empty
     client.base_riak_json_path().should.not.be.empty
     client.base_collection_path().should.not.be.empty
+    var collection_name
+    done()
+  })
+  
+  it("should know the url for a collection", function(done) {
+    var host = '127.0.0.1'
+    var port = 8098
+    var collection_name = 'test-collection'
+    var client = riak_json.getClient(host, port)
+    client.collection_url(collection_name).should.equal('http://127.0.0.1:8098/document/collection/test-collection')
     done()
   })
 })

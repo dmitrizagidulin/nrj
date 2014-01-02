@@ -10,6 +10,9 @@
     "type": "git",
     "url": "https://github.com/dmitrizagidulin/nrj.git"
   },
+  "dependencies": {
+    "superagent": "*"
+  },
   "devDependencies": {
     "mocha": "*",
     "should": "*"
