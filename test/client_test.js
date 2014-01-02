@@ -24,6 +24,7 @@ describe("Riak Json Client Test Suite", function() {
     client.should.be.an.instanceOf(riak_json.RiakJsonClient)
     client.should.have.property('host')
     client.should.have.property('port')
+    client.should.have.property('transport')
     done()
   })
   
@@ -36,9 +37,9 @@ describe("Riak Json Client Test Suite", function() {
   })
   
   it("should know the base Riak cluster and RiakJson urls", function(done) {
-    client.base_riak_url().should.not.be.empty
-    client.base_riak_json_url().should.not.be.empty
-    client.base_collection_url().should.not.be.empty
+    client.base_riak_path().should.not.be.empty
+    client.base_riak_json_path().should.not.be.empty
+    client.base_collection_path().should.not.be.empty
     done()
   })
 })
