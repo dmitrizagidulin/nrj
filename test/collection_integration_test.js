@@ -24,8 +24,11 @@ describe("a Collection", function() {
     var collection = client.collection('cities')
     var test_key = 'document-key-123'
     var json_obj = { 'field_one': '123', 'field_two': 'abc' }
-    collection.insert_raw_json(test_key, json_obj)
-//    key.should.equal(test_key)
-    done()
+    var callback = function(err, response) {
+      should.not.exist(err)
+      done()
+    }
+    var returned_key = collection.insert_raw_json(test_key, json_obj, callback)
+    returned_key.should.equal(test_key)
   })
 })
