@@ -28,11 +28,17 @@ describe("Riak Json Client Test Suite", function() {
   })
   
   it("should be able to ping the Riak Json cluster", function(done) {
-    
     client.ping(function(err, response) {
       should.not.exist(err)
       response.should.equal("OK")
       done()
     })
+  })
+  
+  it("should know the base Riak cluster and RiakJson urls", function(done) {
+    client.base_riak_url().should.not.be.empty
+    client.base_riak_json_url().should.not.be.empty
+    client.base_collection_url().should.not.be.empty
+    done()
   })
 })
