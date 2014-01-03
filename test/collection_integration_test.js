@@ -30,4 +30,15 @@ describe("a Collection", function() {
       done()
     })
   })
+  
+  it("should be able to read raw JSON objects", function(done) {
+    var collection = client.collection('cities')
+    var test_key = 'document-key-123'
+    // existing_json_obj should contain: { 'field_one': '123', 'field_two': 'abc' }
+    collection.get_raw_json(test_key, function(err, doc) {
+      should.not.exist(err)
+      doc.field_one.should.equal('123')
+      done()
+    })
+  })
 })
