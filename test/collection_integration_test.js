@@ -58,4 +58,17 @@ describe("a Collection", function() {
       })
     })
   })
+  
+  it("should be able to delete raw JSON objects", function(done) {
+    var collection = client.collection('cities')
+    var test_key = 'document-key-123'
+    collection.delete_raw_json(test_key, function(err) {
+      should.not.exist(err)
+      // JSON object should be deleted now. Attempt to read, to ensure a 404
+      collection.get_raw_json(test_key, function(err, updated_doc) {
+        should.not.exist(err)
+        done()
+      })
+    })
+  })
 })
