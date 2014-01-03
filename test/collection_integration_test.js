@@ -41,4 +41,21 @@ describe("a Collection", function() {
       done()
     })
   })
+  
+  it("should be able to update raw JSON objects", function(done) {
+    var collection = client.collection('cities')
+    var test_key = 'document-key-123'
+    // existing_json_obj should contain: { 'field_one': '123', 'field_two': 'abc' }
+    var new_json = { 'field_one': '999', 'field_two': 'def' }
+    collection.update_raw_json(test_key, new_json, function(err) {
+      should.not.exist(err)
+      // JSON object should be updated now. Read to verify new value
+      collection.get_raw_json(test_key, function(err, updated_doc) {
+        should.not.exist(err)
+        updated_doc.field_one.should.equal('999')
+        updated_doc.field_two.should.equal('def')
+        done()
+      })
+    })
+  })
 })
