@@ -20,15 +20,14 @@ var riak_json = require('../index.js')
 var client = riak_json.getClient()
 
 describe("a Collection", function() {
-  it("should be able to write, read, and update raw JSON objs", function(done) {
+  it("should be able to write raw JSON objects", function(done) {
     var collection = client.collection('cities')
     var test_key = 'document-key-123'
     var json_obj = { 'field_one': '123', 'field_two': 'abc' }
-    var callback = function(err, response) {
+    collection.insert_raw_json(test_key, json_obj, function(err, returned_key) {
       should.not.exist(err)
+      returned_key.should.equal(test_key)
       done()
-    }
-    var returned_key = collection.insert_raw_json(test_key, json_obj, callback)
-    returned_key.should.equal(test_key)
+    })
   })
 })
