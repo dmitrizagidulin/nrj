@@ -31,7 +31,7 @@ describe("a Collection", function() {
   
   describe("can perform CRUD operations on documents", function() {
     it("can insert a document", function() {
-      mock = sinon.mock(client).expects("insert_raw_json").once()
+      var mock = sinon.mock(client).expects("insert_raw_json").once()
       var collection = client.collection('cities')
       var doc = new riak_json.RJDocument('nyc', {city: 'New York', state: 'NY'})
       collection.insert(doc)
@@ -40,11 +40,20 @@ describe("a Collection", function() {
     })
     
     it("can load a document by key", function() {
-      mock = sinon.mock(client).expects("get_json_object").once()
+      var mock = sinon.mock(client).expects("get_json_object").once()
       var collection = client.collection('cities')
       collection.find_by_key('nyc')
       mock.verify()
       client.get_json_object.restore()
+    })
+    
+    it("can delete a document", function() {
+      var mock = sinon.mock(client).expects("delete_raw_json").once()
+      var collection = client.collection('cities')
+      var doc = new riak_json.RJDocument('nyc', {city: 'New York', state: 'NY'})
+      collection.remove(doc)
+      mock.verify()
+      client.delete_raw_json.restore()
     })
   })
 })
