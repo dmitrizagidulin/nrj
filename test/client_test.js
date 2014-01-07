@@ -16,6 +16,7 @@ under the License.
 **/
 
 var should = require('should')
+var sinon = require('sinon')
 var riak_json = require('../index.js')
 
 var client = riak_json.Client.getClient()
@@ -50,6 +51,16 @@ describe("Riak Json Client Test Suite", function() {
     var collection_name = 'test-collection'
     var client = riak_json.Client.getClient(host, port)
     client.collection_url(collection_name).should.equal('http://127.0.0.1:8098/document/collection/test-collection')
+    done()
+  })
+  
+  it("can perform a 'find one' query to a collection", function(done) {
+    var mock = sinon.mock(client.transport).expects("put_request").once()
+    var collection_name = 'cities'
+    var query = {city: 'New York'}
+    var callback
+    client.get_query_one(collection_name, query, callback)
+    mock.verify()
     done()
   })
 })
