@@ -15,5 +15,14 @@ specific language governing permissions and limitations
 under the License.
 **/
 
-module.exports.RJDocument = require('./lib/document')
-module.exports.Client = require('./lib/client')
+var should = require('should')
+var riak_json = require('../index.js')
+
+describe("a RiakJson Document", function() {
+  it("has a key, and a body property containing attributes", function(done) {
+    var test_key = 'doc123'
+    var attributes = { field1: 1234, field2: 'abcd'}
+    var doc = new riak_json.RJDocument(test_key, attributes)
+    done()
+  })
+})

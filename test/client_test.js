@@ -17,11 +17,12 @@ under the License.
 
 var should = require('should')
 var riak_json = require('../index.js')
-var client = riak_json.getClient()
+
+var client = riak_json.Client.getClient()
 
 describe("Riak Json Client Test Suite", function() {
   it("should be a valid client with default host and port", function(done) {
-    client.should.be.an.instanceOf(riak_json.RiakJsonClient)
+    client.should.be.an.instanceOf(riak_json.Client.RiakJsonClient)
     client.should.have.property('host')
     client.should.have.property('port')
     client.should.have.property('transport')
@@ -47,7 +48,7 @@ describe("Riak Json Client Test Suite", function() {
     var host = '127.0.0.1'
     var port = 8098
     var collection_name = 'test-collection'
-    var client = riak_json.getClient(host, port)
+    var client = riak_json.Client.getClient(host, port)
     client.collection_url(collection_name).should.equal('http://127.0.0.1:8098/document/collection/test-collection')
     done()
   })

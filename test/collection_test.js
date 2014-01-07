@@ -17,7 +17,7 @@ under the License.
 
 var should = require('should')
 var riak_json = require('../index.js')
-var client = riak_json.getClient()
+var client = riak_json.Client.getClient()
 
 describe("a Collection", function() {
   it("should have a name and client", function(done) {
