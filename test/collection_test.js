@@ -30,30 +30,44 @@ describe("a Collection", function() {
   })
   
   describe("can perform CRUD operations on documents", function() {
-    it("can insert a document", function() {
+    it("can insert a document", function(done) {
       var mock = sinon.mock(client).expects("insert_raw_json").once()
       var collection = client.collection('cities')
       var doc = new riak_json.RJDocument('nyc', {city: 'New York', state: 'NY'})
       collection.insert(doc)
       mock.verify()
       client.insert_raw_json.restore()
+      done()
     })
     
-    it("can load a document by key", function() {
+    it("can load a document by key", function(done) {
       var mock = sinon.mock(client).expects("get_json_object").once()
       var collection = client.collection('cities')
       collection.find_by_key('nyc')
       mock.verify()
       client.get_json_object.restore()
+      done()
     })
     
-    it("can delete a document", function() {
+    it("can delete a document", function(done) {
       var mock = sinon.mock(client).expects("delete_raw_json").once()
       var collection = client.collection('cities')
       var doc = new riak_json.RJDocument('nyc', {city: 'New York', state: 'NY'})
       collection.remove(doc)
       mock.verify()
       client.delete_raw_json.restore()
+      done()
+    })
+  })
+  
+  describe("can query to find one or more documents", function() {
+    it("query for one document via an exact field match", function() {
+      var mock = sinon.mock(client).expects("get_query_one").once()
+      var collection = client.collection('cities')
+      var query = {city: 'New York'}  // Find the first document with the city field equal to 'New York'
+      collection.find_one(query)
+      mock.verify()
+      client.get_query_one.restore()
     })
   })
 })
