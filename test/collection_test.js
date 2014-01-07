@@ -65,9 +65,20 @@ describe("a Collection", function() {
       var mock = sinon.mock(client).expects("get_query_one").once()
       var collection = client.collection('cities')
       var query = {city: 'New York'}  // Find the first document with the city field equal to 'New York'
-      collection.find_one(query)
+      var callback
+      collection.find_one(query, callback)
       mock.verify()
       client.get_query_one.restore()
+    })
+    
+    it("query for all documents having an exact field match", function() {
+      var mock = sinon.mock(client).expects("get_query_all").once()
+      var collection = client.collection('cities')
+      var query = {state: 'NY'}  // Find all documents with the state field equal to 'NY'
+      var callback
+      collection.find_all(query, callback)
+      mock.verify()
+      client.get_query_all.restore()
     })
   })
 })

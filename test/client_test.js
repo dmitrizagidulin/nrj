@@ -61,6 +61,18 @@ describe("Riak Json Client Test Suite", function() {
     var callback
     client.get_query_one(collection_name, query, callback)
     mock.verify()
+    client.transport.put_request.restore()
+    done()
+  })
+  
+  it("can perform a 'find all' query to a collection", function(done) {
+    var mock = sinon.mock(client.transport).expects("put_request").once()
+    var collection_name = 'cities'
+    var query = {state: 'NY'}
+    var callback
+    client.get_query_all(collection_name, query, callback)
+    mock.verify()
+    client.transport.put_request.restore()
     done()
   })
 })
