@@ -16,6 +16,7 @@ under the License.
 **/
 
 var should = require('should')
+var sinon = require('sinon')
 var riak_json = require('../index.js')
 var client = riak_json.Client.getClient()
 
@@ -26,5 +27,24 @@ describe("a Collection", function() {
     collection.name.should.equal('cities')
     collection.should.have.property('client')
     done()
+  })
+  
+  describe("can perform CRUD operations on documents", function() {
+    it("can insert a document", function() {
+      mock = sinon.mock(client).expects("insert_raw_json").once()
+      var collection = client.collection('cities')
+      var doc = new riak_json.RJDocument('nyc', {city: 'New York', state: 'NY'})
+      collection.insert(doc)
+      mock.verify()
+      client.insert_raw_json.restore()
+    })
+    
+    it("can load a document by key", function() {
+      mock = sinon.mock(client).expects("get_json_object").once()
+      var collection = client.collection('cities')
+      collection.find_by_key('nyc')
+      mock.verify()
+      client.get_json_object.restore()
+    })
   })
 })
