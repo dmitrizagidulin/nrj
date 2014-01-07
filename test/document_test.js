@@ -23,6 +23,25 @@ describe("a RiakJson Document", function() {
     var test_key = 'doc123'
     var attributes = { field1: 1234, field2: 'abcd'}
     var doc = new riak_json.RJDocument(test_key, attributes)
+    
+    doc.key.should.equal(test_key)
+    doc.body.should.have.property('field1')
+    doc.body.should.have.property('field2')
+    done()
+  })
+  
+  it("can be converted to and from JSON strings", function(done) {
+    var test_key = 'doc123'
+    var attributes = { field1: 1234, field2: 'abcd'}
+    var doc = new riak_json.RJDocument(test_key, attributes)
+    
+    var json_string = doc.to_json_document()
+    json_string.should.be.type('string')
+    json_string.should.not.be.empty
+    
+    var parsed_json = JSON.parse(json_string)
+    parsed_json.field1.should.equal(1234)
+    parsed_json.field2.should.equal('abcd')
     done()
   })
 })
