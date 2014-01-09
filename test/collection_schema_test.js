@@ -15,6 +15,16 @@ specific language governing permissions and limitations
 under the License.
 **/
 
-module.exports.RJDocument = require('./lib/document')
-module.exports.Client = require('./lib/client')
-module.exports.CollectionSchema = require('./lib/collection_schema')
+var should = require('should')
+var riak_json = require('../index.js')
+var client = riak_json.Client.getClient()
+
+
+describe("a Collection Schema", function() {
+  it("a new schema can be created for a collection", function(done) {
+    var collection = client.collection('cities')
+    var schema = collection.new_schema()
+    schema.should.be.instanceOf(riak_json.CollectionSchema)
+    done()
+  })
+})
