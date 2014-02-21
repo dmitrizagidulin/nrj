@@ -15,38 +15,37 @@ specific language governing permissions and limitations
 under the License.
 **/
 
-var should = require('should')
-var riak_json = require('../index.js')
-var client = riak_json.Client.getClient()
-
+var should = require('should');
+var riak_json = require('../index.js');
+var client = riak_json.Client.getClient();
 
 describe("a Collection Schema", function() {
   it("a new schema can be created for a collection", function(done) {
-    var collection = client.collection('cities')
-    var schema = collection.new_schema()
-    schema.should.be.instanceOf(riak_json.CollectionSchema)
-    schema.fields.should.have.lengthOf(0, "A new CollectionSchema should have no fields defined")
-    done()
-  })
+    var collection = client.collection('cities');
+    var schema = collection.new_schema();
+    schema.should.be.instanceOf(riak_json.CollectionSchema);
+    schema.fields.should.have.lengthOf(0, "A new CollectionSchema should have no fields defined");
+    done();
+  });
   
   it("consists of fields of various types", function(done) {
-    var collection = client.collection('cities')
-    var schema = collection.new_schema()
-    var field_name, required
+    var collection = client.collection('cities');
+    var schema = collection.new_schema();
+    var field_name, required;
     
-    schema.addTextField(field_name='city', required=true)
-    schema.fields.should.have.lengthOf(1)
+    schema.addTextField(field_name='city', required=true);
+    schema.fields.should.have.lengthOf(1);
     
-    schema.addStringField(field_name='state', required=true)
-    schema.fields.should.have.lengthOf(2)
+    schema.addStringField(field_name='state', required=true);
+    schema.fields.should.have.lengthOf(2);
     
-    schema.addMultiStringField(field_name='zip_codes')
-    schema.fields.should.have.lengthOf(3)
-    schema.fields[2].name.should.equal('zip_codes')
-    schema.fields[2].require.should.be.false  // Field is not required, by default
+    schema.addMultiStringField(field_name='zip_codes');
+    schema.fields.should.have.lengthOf(3);
+    schema.fields[2].name.should.equal('zip_codes');
+    schema.fields[2].require.should.be.false;  // Field is not required, by default
 
-    schema.addIntegerField(field_name='population')
-    schema.fields.should.have.lengthOf(4)
-    done()
-  })
-})
+    schema.addIntegerField(field_name='population');
+    schema.fields.should.have.lengthOf(4);
+    done();
+  });
+});

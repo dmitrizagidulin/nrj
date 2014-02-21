@@ -15,70 +15,72 @@ specific language governing permissions and limitations
 under the License.
 **/
 
-var should = require('should')
-var sinon = require('sinon')
-var riak_json = require('../index.js')
-var client = riak_json.Client.getClient()
+var should = require('should');
+var sinon = require('sinon');
+var riak_json = require('../index.js');
+var client = riak_json.Client.getClient();
 
 describe("a Collection", function() {
   it("should have a name and client", function(done) {
-    var collection = client.collection('cities')
-    collection.should.have.property('name')
-    collection.name.should.equal('cities')
-    collection.should.have.property('client')
-    done()
-  })
+    var collection = client.collection('cities');
+    collection.should.have.property('name');
+    collection.name.should.equal('cities');
+    collection.should.have.property('client');
+    done();
+  });
   
   describe("can perform CRUD operations on documents", function() {
     it("can insert a document", function(done) {
-      var mock = sinon.mock(client).expects("insert_raw_json").once()
-      var collection = client.collection('cities')
-      var doc = new riak_json.RJDocument('nyc', {city: 'New York', state: 'NY'})
-      collection.insert(doc)
-      mock.verify()
-      client.insert_raw_json.restore()
-      done()
-    })
+      var mock = sinon.mock(client).expects("insert_raw_json").once();
+      var collection = client.collection('cities');
+      var doc = new riak_json.RJDocument('nyc', {city: 'New York', state: 'NY'});
+      collection.insert(doc);
+      mock.verify();
+      client.insert_raw_json.restore();
+      done();
+    });
     
     it("can load a document by key", function(done) {
-      var mock = sinon.mock(client).expects("get_json_object").once()
-      var collection = client.collection('cities')
-      collection.find_by_key('nyc')
-      mock.verify()
-      client.get_json_object.restore()
-      done()
-    })
+      var mock = sinon.mock(client).expects("get_json_object").once();
+      var collection = client.collection('cities');
+      collection.find_by_key('nyc');
+      mock.verify();
+      client.get_json_object.restore();
+      done();
+    });
     
     it("can delete a document", function(done) {
-      var mock = sinon.mock(client).expects("delete_raw_json").once()
-      var collection = client.collection('cities')
-      var doc = new riak_json.RJDocument('nyc', {city: 'New York', state: 'NY'})
-      collection.remove(doc)
-      mock.verify()
-      client.delete_raw_json.restore()
-      done()
-    })
-  })
+      var mock = sinon.mock(client).expects("delete_raw_json").once();
+      var collection = client.collection('cities');
+      var doc = new riak_json.RJDocument('nyc', {city: 'New York', state: 'NY'});
+      collection.remove(doc);
+      mock.verify();
+      client.delete_raw_json.restore();
+      done();
+    });
+  });
   
   describe("can query to find one or more documents", function() {
-    it("query for one document via an exact field match", function() {
-      var mock = sinon.mock(client).expects("get_query_one").once()
-      var collection = client.collection('cities')
-      var query = {city: 'New York'}  // Find the first document with the city field equal to 'New York'
-      var callback
-      collection.find_one(query, callback)
-      mock.verify()
-      client.get_query_one.restore()
-    })
+    it("query for one document via an exact field match", function(done) {
+      var mock = sinon.mock(client).expects("get_query_one").once();
+      var collection = client.collection('cities');
+      var query = {city: 'New York'};  // Find the first document with the city field equal to 'New York'
+      var callback;
+      collection.find_one(query, callback);
+      mock.verify();
+      client.get_query_one.restore();
+      done();;
+    });
     
-    it("query for all documents having an exact field match", function() {
-      var mock = sinon.mock(client).expects("get_query_all").once()
-      var collection = client.collection('cities')
-      var query = {state: 'NY'}  // Find all documents with the state field equal to 'NY'
-      var callback
-      collection.find_all(query, callback)
-      mock.verify()
-      client.get_query_all.restore()
-    })
-  })
-})
+    it("query for all documents having an exact field match", function(done) {
+      var mock = sinon.mock(client).expects("get_query_all").once();
+      var collection = client.collection('cities');
+      var query = {state: 'NY'};  // Find all documents with the state field equal to 'NY'
+      var callback;
+      collection.find_all(query, callback);
+      mock.verify();
+      client.get_query_all.restore();
+      done();
+    });
+  });
+});

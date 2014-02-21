@@ -15,6 +15,6 @@ specific language governing permissions and limitations
 under the License.
 **/
 
-module.exports.RJDocument = require('./lib/document')
-module.exports.Client = require('./lib/client')
+module.exports.RJDocument = require('./lib/r_j_document')
+module.exports.Client = require('./lib/riak_json_client')
 module.exports.CollectionSchema = require('./lib/collection_schema')
