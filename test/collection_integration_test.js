@@ -88,7 +88,7 @@ describe("a Collection", function() {
     before(function() {
       var schema = test_schema();
       var collection = client.collection('cities');
-      collection.set_schema(schema);
+      collection.set_schema(schema, function(){});
     });
     
     it("can read schemas", function(done) {
@@ -96,7 +96,7 @@ describe("a Collection", function() {
       collection.get_schema(function(err, schema) {
         should.not.exist(err);
         // JSON object should be deleted now. Attempt to read, to ensure a 404
-        schema.fields[0].name.should.equal('city');
+        schema[0].name.should.equal('city');
         done();
       });
     });
