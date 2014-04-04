@@ -25,7 +25,7 @@ var cities_collection = client.collection('cities');
 You may set an optional Solr indexing schema for a RiakJson collection.
 If you do not set an explicit schema, and start inserting documents into a collection, RiakJson will
 attempt to [infer a schema](https://github.com/basho-labs/riak_json/blob/master/docs/architecture.md#inferred-schemas) based 
-on the document's structure (keep in mind, though, that is will generally attempt to index *every* field in the document).
+on the document's structure (keep in mind, though, that the derived schema attempts to index *every* field in the document).
 
 Supported Solr indexing field types:
  - ```string``` (no spaces, think of a url slug)
@@ -40,7 +40,7 @@ schema.addStringField('state', true);
 schema.addMultiStringField('zip_codes');  // required: false
 schema.addIntegerField('population');
 schema.addStringField('country', true);
-cities_collection.set_schema(schema, function(){ // callback fn });
+cities_collection.set_schema(schema, function(){ /* callback fn */ });
 ```
 
 You can now retrieve the stored schema (once RiakJson and Solr has had a chance to process it).
