@@ -30,4 +30,20 @@ schema = collection.new_schema();
 schema.addStringField('abbreviation', true);
 schema.addTextField('name', true);
 schema.addTextField('capital', true);
-//schema.addLocationRptField('capital_coords_rpt')
+schema.addLocationRptField('capital_coords_rpt');
+collection.set_schema(schema);
+
+var state;
+var state_doc;
+for(var abbrev in capitals) {
+  state_data = capitals[abbrev];
+  state = {
+      abbreviation: abbrev,
+      name: state_data.name,
+      capital: state_data.capital,
+      capital_coords_rpt: state_data.lat + ',' + state_data.long
+  }
+  state_doc = new riak_json.RJDocument(abbrev, state); // key = two-letter state abbreviation
+  collection.insert(state_doc);
+  console.log('   insert '+abbrev+'.')
+}
