@@ -21,6 +21,10 @@
   "keywords": [
     "riak",
     "basho",
+    "solr",
+    "search",
+    "odm",
+    "document",
     "json"
   ],
   "author": "Dmitri Zagidulin <dzagidulin@basho.com>",
