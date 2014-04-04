@@ -19,10 +19,13 @@ var should = require('should');
 var riak_json = require('../index.js');
 var client = riak_json.Client.getClient();
 
+var cities_collection_name = '_nrj-test-cities';
+var capitals_collection_name = '_nrj-test-us-capitals';
+
 describe("a Collection", function() {
   describe("can perform CRUD on raw JSON objects", function() {
     it("should be able to write raw JSON objects", function(done) {
-      var collection = client.collection('cities');
+      var collection = client.collection(cities_collection_name);
       var test_key = 'document-key-123';
       var json_obj = { 'field_one': '123', 'field_two': 'abc' };
       collection.insert_raw_json(test_key, json_obj, function(err, returned_key) {
@@ -33,7 +36,7 @@ describe("a Collection", function() {
     });
     
     it("should be able to read raw JSON objects", function(done) {
-      var collection = client.collection('cities');
+      var collection = client.collection(cities_collection_name);
       var test_key = 'document-key-123';
       // existing_json_obj should contain: { 'field_one': '123', 'field_two': 'abc' }
       collection.get_raw_json(test_key, function(err, doc) {
@@ -44,7 +47,7 @@ describe("a Collection", function() {
     });
     
     it("should be able to update raw JSON objects", function(done) {
-      var collection = client.collection('cities');
+      var collection = client.collection(cities_collection_name);
       var test_key = 'document-key-123';
       // existing_json_obj should contain: { 'field_one': '123', 'field_two': 'abc' }
       var new_json = { 'field_one': '999', 'field_two': 'def' };
@@ -61,7 +64,7 @@ describe("a Collection", function() {
     });
     
     it("should be able to delete raw JSON objects", function(done) {
-      var collection = client.collection('cities');
+      var collection = client.collection(cities_collection_name);
       var test_key = 'document-key-123';
       collection.delete_raw_json(test_key, function(err) {
         should.not.exist(err);
@@ -77,7 +80,7 @@ describe("a Collection", function() {
   describe("can perform schema administration", function() {
     function test_schema() {
       var required;
-      var schema = client.collection('cities').new_schema();
+      var schema = client.collection(cities_collection_name).new_schema();
       schema.addTextField('city', required=true);
       schema.addStringField('state', required=true);
       schema.addMultiStringField('zip_codes');
@@ -87,16 +90,26 @@ describe("a Collection", function() {
     
     before(function() {
       var schema = test_schema();
-      var collection = client.collection('cities');
+      var collection = client.collection(cities_collection_name);
       collection.set_schema(schema, function(){});
     });
     
     it("can read schemas", function(done) {
-      var collection = client.collection('cities');
+      var collection = client.collection(cities_collection_name);
       collection.get_schema(function(err, schema) {
         should.not.exist(err);
         // JSON object should be deleted now. Attempt to read, to ensure a 404
         schema[0].name.should.equal('city');
+        done();
+      });
+    });
+  });
+  
+  describe("can perform searches / solr queries on a collection", function() {
+    it("can return all documents in a collection", function(done) {
+      var collection = client.collection(capitals_collection_name);
+      collection.all(function(error, result) { 
+//        console.log(result.body);
         done();
       });
     });

@@ -15,7 +15,7 @@ specific language governing permissions and limitations
 under the License.
 **/
 
-var riak_json = require('../index.js');
+var riak_json = require('../../index.js');
 var client = riak_json.Client.getClient();
 var collection;
 var schema;
@@ -23,7 +23,7 @@ var schema;
 console.log('Seeding test collections...');
 
 console.log('  US Capitals')
-var capitals = require('./seeds/us_capitals.js').USCapitals;
+var capitals = require('./us_capitals.js').USCapitals;
 
 collection = client.collection('_nrj-test-us-capitals');
 schema = collection.new_schema();
