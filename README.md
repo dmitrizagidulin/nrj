@@ -22,16 +22,20 @@ var cities_collection = client.collection('cities');
 ```
 
 ### Solr Schema Administration
-You may set an optional Solr indexing schema for a RiakJson collection.
+You may set an optional Solr indexing schema for a RiakJson collection, by specifying which fields it should index, and how.
+
 If you do not set an explicit schema, and start inserting documents into a collection, RiakJson will
 attempt to [infer a schema](https://github.com/basho-labs/riak_json/blob/master/docs/architecture.md#inferred-schemas) based 
 on the document's structure (keep in mind, though, that the derived schema attempts to index *every* field in the document).
 
 Supported Solr indexing field types:
  - ```string``` (no spaces, think of a url slug)
- - ```text``` (spaces allowed)
+ - ```text``` (spaces allowed, Solr 'text_general' type field)
  - ```multi_string``` (an array of strings, no spaces)
  - ```integer```
+ - ```number``` (floating point, Solr type 'tdouble')
+ - ```location``` (flat geospatial field, Solr 'location'/LatLonType type field)
+ - ```location_rpt``` (spherical geospatial, Solr 'location_rpt'/SpatialRecursivePrefixTreeFieldType type field)
 
 ```js
 schema = cities_collection.new_schema();  // get a new CollectionSchema object
@@ -40,7 +44,7 @@ schema.addStringField('state', true);
 schema.addMultiStringField('zip_codes');  // required: false
 schema.addIntegerField('population');
 schema.addStringField('country', true);
-cities_collection.set_schema(schema, function(){ /* callback fn */ });
+cities_collection.set_schema(schema);
 ```
 
 You can now retrieve the stored schema (once RiakJson and Solr has had a chance to process it).
@@ -69,7 +73,7 @@ schema_fields = cities_collection.get_schema(function(result) { console.log(resu
 //    }]
 ```
 
-### Reading and Writing Documents
+### K/V - Reading and Writing Documents
 You can now perform CRUD operations on JSON documents and collections:
 ```js
 var doc = new riak_json.RJDocument('nyc', {city: 'New York', state: 'NY'}); // key = 'nyc'
@@ -80,7 +84,7 @@ collection.find_by_key('nyc'); // => {city: 'New York', state: 'NY'}
 collection.remove(doc);  // => deletes the document at key 'nyc'
 ```
 
-### Querying RiakJson - find_one() and find_all()
+### Solr Search / Querying RiakJson
 See [RiakJson Query Docs](https://github.com/basho-labs/riak_json/blob/master/docs/query.md) 
 for a complete list of valid query parameters.
 
