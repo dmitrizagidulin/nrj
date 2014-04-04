@@ -1,6 +1,6 @@
 {
   "name": "nrj",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A Node.js client for the Riak Json https://github.com/basho-labs/riak_json/ document store framework.",
   "main": "index.js",
   "scripts": {
