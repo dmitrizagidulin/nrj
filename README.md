@@ -1,11 +1,11 @@
 nrj
 ===
 
-A Node.js client for Riak Json document store framework
+A Node.js client for [RiakJson](https://github.com/basho-labs/riak_json/) document store framework
 
 ## Installation
 ```
-npm install nrj
+npm install -g nrj
 ```
 
 ## Usage
@@ -25,7 +25,7 @@ var cities_collection = client.collection('cities');
 You may set an optional Solr indexing schema for a RiakJson collection.
 If you do not set an explicit schema, and start inserting documents into a collection, RiakJson will
 attempt to [infer a schema](https://github.com/basho-labs/riak_json/blob/master/docs/architecture.md#inferred-schemas) based 
-on the document's structure.
+on the document's structure (keep in mind, though, that is will generally attempt to index *every* field in the document).
 
 Supported Solr indexing field types:
  - ```string``` (no spaces, think of a url slug)
