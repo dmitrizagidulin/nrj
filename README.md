@@ -80,6 +80,10 @@ collection.find_by_key('nyc'); // => {city: 'New York', state: 'NY'}
 collection.remove(doc);  // => deletes the document at key 'nyc'
 ```
 
+### Querying RiakJson - find_one() and find_all()
+See [RiakJson Query Docs](https://github.com/basho-labs/riak_json/blob/master/docs/query.md) 
+for a complete list of valid query parameters.
+
 ### Unit Testing
 ```
 npm test
