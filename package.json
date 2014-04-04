@@ -4,6 +4,7 @@
   "description": "A Node.js client for the Riak Json https://github.com/basho-labs/riak_json/ document store framework.",
   "main": "index.js",
   "scripts": {
+    "seed": "node ./test/_seeds.js",
     "test": "./node_modules/.bin/mocha"
   },
   "repository": {
