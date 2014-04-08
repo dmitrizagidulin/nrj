@@ -108,11 +108,31 @@ describe("a Collection", function() {
   });
 
   describe("can perform searches / solr queries on a collection", function() {
+
+    var collection = client.collection(capitals_collection_name);
+
     it("can return all documents in a collection", function(done) {
-      var collection = client.collection(capitals_collection_name);
       collection.all(function(error, result) {
-        result.body.total.should.equal(49);
+        result.body.total.should.equal(46);
         done();
+      });
+    });
+
+    it("can perform geospatial solr queries on a collection", function(done) {
+      var spatial_field = 'capital_coords_rpt';
+      var location = '41.82355,-71.422132'; // Providence, RI
+      var distance = '300'; // kilometers
+      var filter = 'true'; // exclude results that are outside of the distance?
+      var query_params = {
+        fl: '*,score', // field list
+        sort: 'score asc',
+        q: '{!geofilt score=distance filter=' + filter + ' sfield=' + spatial_field + ' pt=' + location + ' d=' + distance + '}',
+        wt: 'json'
+      };
+
+      collection.raw_solr_query(query_params, function(err, result){
+        result.response.numFound.should.equal(6); // There should be 6 state capitals within 300km of Providence RI
+        done(err);
       });
     });
   });
