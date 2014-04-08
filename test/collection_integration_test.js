@@ -23,6 +23,9 @@ var cities_collection_name = '_nrj-test-cities';
 var capitals_collection_name = '_nrj-test-us-capitals';
 
 describe("a Collection", function() {
+
+  this.timeout(10000);
+
   describe("can perform CRUD on raw JSON objects", function() {
     it("should be able to write raw JSON objects", function(done) {
       var collection = client.collection(cities_collection_name);
@@ -34,7 +37,7 @@ describe("a Collection", function() {
         done();
       });
     });
-    
+
     it("should be able to read raw JSON objects", function(done) {
       var collection = client.collection(cities_collection_name);
       var test_key = 'document-key-123';
@@ -45,7 +48,7 @@ describe("a Collection", function() {
         done();
       });
     });
-    
+
     it("should be able to update raw JSON objects", function(done) {
       var collection = client.collection(cities_collection_name);
       var test_key = 'document-key-123';
@@ -62,7 +65,7 @@ describe("a Collection", function() {
         });
       });
     });
-    
+
     it("should be able to delete raw JSON objects", function(done) {
       var collection = client.collection(cities_collection_name);
       var test_key = 'document-key-123';
@@ -78,22 +81,21 @@ describe("a Collection", function() {
   });
 
   describe("can perform schema administration", function() {
+    var collection = client.collection(cities_collection_name);
     function test_schema() {
-      var required;
-      var schema = client.collection(cities_collection_name).new_schema();
-      schema.addTextField('city', required=true);
-      schema.addStringField('state', required=true);
+      var schema = collection.new_schema();
+      schema.addTextField('city', true);
+      schema.addStringField('state', true);
       schema.addMultiStringField('zip_codes');
       schema.addIntegerField('population');
       return schema;
     }
-    
-    before(function() {
+
+    beforeEach(function(done) {
       var schema = test_schema();
-      var collection = client.collection(cities_collection_name);
-      collection.set_schema(schema, function(){});
+      collection.set_schema(schema, done);
     });
-    
+
     it("can read schemas", function(done) {
       var collection = client.collection(cities_collection_name);
       collection.get_schema(function(err, schema) {
@@ -104,12 +106,12 @@ describe("a Collection", function() {
       });
     });
   });
-  
+
   describe("can perform searches / solr queries on a collection", function() {
     it("can return all documents in a collection", function(done) {
       var collection = client.collection(capitals_collection_name);
-      collection.all(function(error, result) { 
-//        console.log(result.body);
+      collection.all(function(error, result) {
+        result.body.total.should.equal(49);
         done();
       });
     });
