@@ -22,7 +22,7 @@ var schema;
 
 console.log('Seeding test collections...');
 
-console.log('  US Capitals')
+console.log('  US Capitals');
 var capitals = require('./us_capitals.js').USCapitals;
 
 collection = client.collection('_nrj-test-us-capitals');
@@ -31,19 +31,21 @@ schema.addStringField('abbreviation', true);
 schema.addTextField('name', true);
 schema.addTextField('capital', true);
 schema.addLocationRptField('capital_coords_rpt');
-collection.set_schema(schema);
+collection.set_schema(schema, populateData);
 
-var state;
-var state_doc;
-for(var abbrev in capitals) {
-  state_data = capitals[abbrev];
-  state = {
-      abbreviation: abbrev,
-      name: state_data.name,
-      capital: state_data.capital,
-      capital_coords_rpt: state_data.lat + ',' + state_data.long
+function populateData(){
+  var state;
+  var state_doc;
+  for(var abbrev in capitals) {
+    state_data = capitals[abbrev];
+    state = {
+        abbreviation: abbrev,
+        name: state_data.name,
+        capital: state_data.capital,
+        capital_coords_rpt: state_data.lat + ',' + state_data.long
+    };
+    state_doc = new riak_json.RJDocument(abbrev, state); // key = two-letter state abbreviation
+    collection.insert(state_doc);
+    console.log('   insert '+abbrev+'.');
   }
-  state_doc = new riak_json.RJDocument(abbrev, state); // key = two-letter state abbreviation
-  collection.insert(state_doc);
-  console.log('   insert '+abbrev+'.')
 }
