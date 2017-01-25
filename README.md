@@ -1,6 +1,8 @@
 nrj
 ===
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/dmitrizagidulin/nrj.svg)](https://greenkeeper.io/)
+
 A Node.js client for [RiakJson](https://github.com/basho-labs/riak_json/) document store framework
 
 ## Installation
